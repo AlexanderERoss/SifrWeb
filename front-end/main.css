@@ -1,0 +1,21 @@
+h1 {
+    text-align: center;
+}
+body {
+    background-color: rgb(20,20,30);
+}
+
+div.main-col {
+    background-color: rgba(255, 255, 255, 50);
+    width: 460px;
+    margin: auto;
+    padding: 20px;
+}
+.table {
+    overflow: auto;
+}
+
+.table .halfcell{
+    float: left;
+    width: 50%;
+}
