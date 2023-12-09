@@ -6,8 +6,12 @@ h1 {
 
 h3 {
     color: rgb(200, 200, 200);
-    font-size: 18pt;
+    font-size: 15;
     margin-bottom: 3px;
+}
+
+p {
+    color: white;
 }
     
 body {

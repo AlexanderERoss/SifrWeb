@@ -2,7 +2,41 @@
 <html>
     <head>
         <title> Sifr - Alexander Ross </title>
-        <link rel="stylesheet" href="main.css"> 
+        <link rel="stylesheet" href="main.css">
+        <script>
+         const PORT = 30003;
+         var host = "http://localhost";
+         async function getSifrCalc(characterSet, xcimalSeparator, negativeSign, formula) {
+             let formulaJsonString = "{CharacterSet: " + characterSet + ", " +
+                                     "XcimalSeparator: " + xcimalSeparator + ", " +
+                                     "NegativeSign: " + negativeSign + ", " +
+                                     "Formula: " + formula + "}";
+             let promise = await fetch("https://dog.ceo/api/breeds/list/all", // host + ":" + PORT,
+                                          {method: "GET",
+                                           // body: formulaJsonString});
+                                           credentials: "omit",
+                                           // headers: {
+                                           //    "Content-Type": "application/json"}
+             });
+             let response = await promise.json();
+             let resultJson = await response.message;
+             console.log("Result: ");
+             console.log(resultJson);
+             return resultJson;
+         }
+
+         async function calculate() {
+             var characterSet = document.getElementById("character-set").value;
+             var xcimalSeparator = document.getElementById("xcimal-separator").value;
+             var negativeSign = document.getElementById("negative-sign").value;
+             var formula = document.getElementById("formula").value;
+
+             sifrResponse = await getSifrCalc(characterSet, xcimalSeparator, negativeSign, formula);
+             
+             document.getElementById("resultTitle").innerHTML = "Result:";
+             document.getElementById("result").innerHTML = JSON.stringify(sifrResponse);
+         }
+        </script>
     </head>
     <body>
         <div class="main-col">            
@@ -35,10 +69,12 @@
             
             <br><br>
             
-            <button class="submit">
+            <button class="submit" onclick="calculate()">
                 Calculate
             </button>
 
+            <h3 id="resultTitle"></h3>
+            <p id="result"></p>
         </div>
     </body>
 </html>
