@@ -11,3 +11,6 @@ Divided into front-end (raw HTML, CSS, and JS) and back-end (Python) at the high
 
 ## Dependencies
 - Sifr pip package for the back-end
+
+## To Implement
+Currently relies upon BODMSA ordering and requires that O (or exponentiation) is the first thing implemented. Can adjust this to generalize to all functions that precede the multiplication operator (to account for the effect of the unary negation operator)
