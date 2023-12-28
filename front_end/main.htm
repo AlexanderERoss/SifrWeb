@@ -3,47 +3,14 @@
     <head>
         <title> Sifr - Alexander Ross </title>
         <link rel="stylesheet" href="main.css">
-        <script>
-         const PORT = 30003;
-         var host = "http://localhost";
-         async function getSifrCalc(characterSet, xcimalSeparator, negativeSign, formula) {
-             let formulaJsonString = "{CharacterSet: " + characterSet + ", " +
-                                     "XcimalSeparator: " + xcimalSeparator + ", " +
-                                     "NegativeSign: " + negativeSign + ", " +
-                                     "Formula: " + formula + "}";
-             let promise = await fetch("https://dog.ceo/api/breeds/list/all", // host + ":" + PORT,
-                                          {method: "GET",
-                                           // body: formulaJsonString});
-                                           credentials: "omit",
-                                           // headers: {
-                                           //    "Content-Type": "application/json"}
-             });
-             let response = await promise.json();
-             let resultJson = await response.message;
-             console.log("Result: ");
-             console.log(resultJson);
-             return resultJson;
-         }
-
-         async function calculate() {
-             var characterSet = document.getElementById("character-set").value;
-             var xcimalSeparator = document.getElementById("xcimal-separator").value;
-             var negativeSign = document.getElementById("negative-sign").value;
-             var formula = document.getElementById("formula").value;
-
-             sifrResponse = await getSifrCalc(characterSet, xcimalSeparator, negativeSign, formula);
-             
-             document.getElementById("resultTitle").innerHTML = "Result:";
-             document.getElementById("result").innerHTML = JSON.stringify(sifrResponse);
-         }
-        </script>
+        <script src="calculate.js" async></script>
     </head>
     <body>
         <div class="main-col">            
             <h1>Sifr Web</h1>
             
             <h3>Character Set</h3>
-            <input id="character-set" style="width: 450px" type="text">
+            <input id="character-set" style="width: 450px" type="text" value="0123456789">
             
             <div class="table">
                 <div class="row" >
@@ -56,10 +23,10 @@
                 </div>
                 <div class="row">
                     <div class="halfcell">
-                        <input id="xcimal-separator" type="text">
+                        <input id="xcimal-separator" type="text" value=".">
                     </div>
                     <div class="halfcell">
-                        <input id="negative-sign" type="text">
+                        <input id="negative-sign" type="text" value="-">
                     </div>
                 </div>
             </div>
@@ -69,7 +36,7 @@
             
             <br><br>
             
-            <button class="submit" onclick="calculate()">
+            <button class="submit" id="calculate-button" onclick="calculate()">
                 Calculate
             </button>
 
