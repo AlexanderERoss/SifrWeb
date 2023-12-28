@@ -1,0 +1,4 @@
+network:
+    address: /sifr/api/
+    port: 30003
+    

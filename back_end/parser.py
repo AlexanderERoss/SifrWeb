@@ -52,7 +52,15 @@ def parenth_calc(formula_text, start_par_sym="(", end_par_sym=")",
             parse_array.append('')
         elif c == end_par_sym:
             try:
-                parse_array[-2] += calculate(parse_array[-1])
+                parse_array[-2] += calculate(parse_array[-1],
+                                             start_par_sym=start_par_sym,
+                                             end_par_sym=end_par_sym,
+                                             digit_type=digit_type,
+                                             pow_sym=pow_sym,
+                                             div_sym=div_sym,
+                                             mul_sym=mul_sym,
+                                             add_sym=add_sym,
+                                             sub_sym=sub_sym)
                 parse_array.pop()
             except IndexError:
                 raise FormulaParsingError("Balanced Parentheses Error: "
@@ -79,12 +87,11 @@ def calculate(formula_text, digit_type=float, start_par_sym="(",
         neg_sym = '-'
     else:
         try:
-            num_chars = digit_type.digit_list
-            sep_point = digit_type.sep_point
-            neg_sym = digit_type.neg_sym
-        except Exception as e:
-            raise UnknownDigitTypeError("Digit characters not known: "
-                                        + e.message)
+            num_chars = digit_type.ssys.digit_list
+            sep_point = digit_type.ssys.sep_point
+            neg_sym = digit_type.ssys.neg_sym
+        except Exception:
+            raise UnknownDigitTypeError("Digit characters not known")
     logging.debug("  num_chars: " + num_chars)
     logging.debug("  sep_point: " + sep_point)
     logging.debug("  neg_sym: " + neg_sym)
