@@ -7,7 +7,7 @@ async function getSifrCalc(characterSet, radixPoint, negativeSign, formula) {
     console.log("Negative Sign: " + negativeSign);
     console.log("Formula: " + formula);
     calc_data = JSON.stringify({"CharacterSet": characterSet,
-                                "RadixPoint": xcimalSeparator,
+                                "RadixPoint": radixPoint,
                                 "NegativeSign": negativeSign,
                                 "Formula": formula});
     console.log("JSON submitted: ");
@@ -29,7 +29,7 @@ async function calculate() {
     var negativeSign = await document.getElementById("negative-sign").value;
     var formula = await document.getElementById("formula").value;
 
-    sifrResponse = await getSifrCalc(characterSet, xcimalSeparator, negativeSign, formula);
+    sifrResponse = await getSifrCalc(characterSet, radixPoint, negativeSign, formula);
 
     document.getElementById("resultTitle").innerHTML = "Result:";
     document.getElementById("result").innerHTML = sifrResponse["Result"];
