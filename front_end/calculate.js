@@ -1,13 +1,13 @@
 // Script for interacting with back end
 
 var host = "http://localhost:5000";
-async function getSifrCalc(characterSet, xcimalSeparator, negativeSign, formula) {
+async function getSifrCalc(characterSet, radixPoint, negativeSign, formula) {
     console.log("Character Set: " + characterSet);
-    console.log("Xcimal Separator: " + xcimalSeparator);
+    console.log("Radix Point: " + radixPoint);
     console.log("Negative Sign: " + negativeSign);
     console.log("Formula: " + formula);
     calc_data = JSON.stringify({"CharacterSet": characterSet,
-                                "XcimalSeparator": xcimalSeparator,
+                                "RadixPoint": xcimalSeparator,
                                 "NegativeSign": negativeSign,
                                 "Formula": formula});
     console.log("JSON submitted: ");
@@ -25,7 +25,7 @@ async function getSifrCalc(characterSet, xcimalSeparator, negativeSign, formula)
 
 async function calculate() {
     var characterSet = await document.getElementById("character-set").value;
-    var xcimalSeparator = await document.getElementById("xcimal-separator").value;
+    var radixPoint = await document.getElementById("radix").value;
     var negativeSign = await document.getElementById("negative-sign").value;
     var formula = await document.getElementById("formula").value;
 
