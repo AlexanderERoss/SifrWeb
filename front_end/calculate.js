@@ -1,3 +1,5 @@
+// Script for interacting with back end
+
 var host = "http://localhost:5000";
 async function getSifrCalc(characterSet, xcimalSeparator, negativeSign, formula) {
     console.log("Character Set: " + characterSet);
