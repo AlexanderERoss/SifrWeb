@@ -32,5 +32,13 @@ async function calculate() {
     sifrResponse = await getSifrCalc(characterSet, radixPoint, negativeSign, formula);
 
     document.getElementById("resultTitle").innerHTML = "Result:";
-    document.getElementById("result").innerHTML = sifrResponse["Result"];
+    // Layer which deals with back-end errors
+    responseCode = await sifrResponse["Response"]
+    if (responseCode == 200) {
+        document.getElementById("result").innerHTML = sifrResponse["Result"];
+
+    }
+    else if (responseCode == 422) {
+        document.getElementById("result").innerHTML = "ERROR: " + sifrResponse["Result"];
+    }
 }
