@@ -1,5 +1,8 @@
 ###############################################################################
-#
+# SifrWeb API
+###############################################################################
+# API that runs on Flask to serve parsed Sifr Caculations, requires the parser
+# located in the same folder to parse the formulae.
 ###############################################################################
 
 # Dependency packages
@@ -36,17 +39,26 @@ def calculate_sifr():
     class SetSifr(Sifr):
         ssys = SifrSystem(digit_list=web_input['CharacterSet'],
                           neg_sym=web_input['NegativeSign'],
-                          sep_point=web_input['XcimalSeparator']
+                          radix=web_input['RadixPoint']
                           )
 
         def __init__(self, sifr: str):
             self.sifr = sifr
             self.no_digits = len(sifr)
             self.is_neg = sifr[0] == web_input["NegativeSign"]
-
-    result = parser.calculate(web_input['Formula'], SetSifr)
-    resp = Response("{\"Result\":\"" + result + "\"}")
-    resp.headers["Content-Type"] = 'application/json'
+    try:
+        result = parser.calculate(web_input['Formula'], SetSifr)
+        resp = Response("{\"Response\":200,\"Result\":\"" + result + "\"}")
+        resp.headers["Content-Type"] = 'application/json'
+    except Exception as e:
+        print("ERROR: ", print(e))
+        try:
+            resp = Response("{\"Response\":422,\"Result\":\""
+                            + e.message + "\"}")
+        except Exception:
+            resp = Response("{\"Response\":422,\"Result\": \""
+                            + "Raw Error -- " + str(e) + "\"}")
+        resp.headers["Content-Type"] = 'application/json'
     return resp
 
 
@@ -56,7 +68,7 @@ def calculate_sifr_test():
     class SetSifr(Sifr):
         ssys = SifrSystem(digit_list='0123456789',
                           neg_sym='-',
-                          sep_point='.')
+                          radix='.')
 
         def __init__(self, sifr: str):
             self.sifr = sifr
@@ -64,6 +76,10 @@ def calculate_sifr_test():
             self.is_neg = sifr[0] == '-'
 
     logging.debug(SetSifr.ssys.digit_list)
-    result = parser.calculate('5+4*3-2', SetSifr)
-
-    return jsonify({'Result': result})
+    try:
+        result = parser.calculate('5+4*3-2', SetSifr)
+        return jsonify({'Response': 200,
+                        'Result': result})
+    except Exception as e:
+        return jsonify({'Response': 422,
+                        'Result': e.message})

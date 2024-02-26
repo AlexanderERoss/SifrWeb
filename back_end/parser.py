@@ -11,8 +11,14 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 
 # Exceptions
-class FormulaParsingError(Exception):
+class NumberSystemConflictError(Exception):
     def __init__(self, message):
+        self.message = message
+        super().__init__(message)
+
+
+class FormulaParsingError(Exception):
+    def __init__(self, message="Unknown parsing error"):
         self.message = message
         super().__init__(message)
 
@@ -23,6 +29,7 @@ class UnknownDigitTypeError(Exception):
         super().__init__(message)
 
 
+# Utility functions
 def make_regex(s2r):
     regex_str = ''
     for c in s2r:
@@ -40,6 +47,7 @@ def make_re_opts(s2r):
     return regex_str[:-1]
 
 
+# Main functions
 def parenth_calc(formula_text, start_par_sym="(", end_par_sym=")",
                  digit_type=float, pow_sym="**", div_sym="/",
                  mul_sym="*", add_sym="+", sub_sym="-"):
@@ -79,22 +87,36 @@ def calculate(formula_text, digit_type=float, start_par_sym="(",
 
     if digit_type == float or digit_type == Decimal:
         num_chars = '0123456789'
-        sep_point = '.'
+        radix = '.'
         neg_sym = '-'
     elif digit_type == int:
         num_chars = '0123456789'
-        sep_point = '.'
+        radix = '.'
         neg_sym = '-'
     else:
         try:
             num_chars = digit_type.ssys.digit_list
-            sep_point = digit_type.ssys.sep_point
+            radix = digit_type.ssys.radix
             neg_sym = digit_type.ssys.neg_sym
         except Exception:
-            raise UnknownDigitTypeError("Digit characters not known")
+            raise UnknownDigitTypeError("Digit characters not known: " +
+                                        "incompatible number type")
     logging.debug("  num_chars: " + num_chars)
-    logging.debug("  sep_point: " + sep_point)
+    logging.debug("  radix: " + radix)
     logging.debug("  neg_sym: " + neg_sym)
+
+    all_chars = num_chars + radix
+    if len(set(all_chars)) != len(all_chars):
+        if all([c in all_chars for c in [start_par_sym,
+                                         end_par_sym,
+                                         pow_sym,
+                                         div_sym,
+                                         mul_sym,
+                                         add_sym,
+                                         sub_sym]]):
+            raise NumberSystemConflictError("Operator system symbol found " +
+                                            " in number characters: no " +
+                                            "duplication allowed")
 
     # Order also defines order in which they're calculated. Exponent must
     # always be first to account for (-x)**y cases
@@ -111,7 +133,7 @@ def calculate(formula_text, digit_type=float, start_par_sym="(",
                        sub_sym: 'right',
                        }
 
-    pos_dig_regex = ('[' + num_chars + ']+(' + make_regex(sep_point) + '['
+    pos_dig_regex = ('[' + num_chars + ']+(' + make_regex(radix) + '['
                      + num_chars + ']+)?')
     expn_regex = ('(' + make_regex(start_par_sym) + make_regex(neg_sym) + '?'
                   + pos_dig_regex + make_regex(end_par_sym)
@@ -175,7 +197,7 @@ def calculate(formula_text, digit_type=float, start_par_sym="(",
                 num_pattern = ('(((?<=(^|[' + make_re_opts(operator_set)
                                + ']))(' + make_regex(neg_sym) + ')?)?['
                                + make_regex(num_chars) + ']+('
-                               + make_regex(sep_point) + '['
+                               + make_regex(radix) + '['
                                + make_regex(num_chars) + ']+)?)')
                 logging.debug("  num_pattern: " + num_pattern)
 
@@ -183,7 +205,7 @@ def calculate(formula_text, digit_type=float, start_par_sym="(",
                 # over negation
                 if sym == pow_sym:
                     base_regex = ('([' + make_regex(num_chars) + ']+('
-                                  + make_regex(sep_point) + '['
+                                  + make_regex(radix) + '['
                                   + make_regex(num_chars) + ']+)?)$')
                     logging.debug("  base_regex: " + base_regex)
                     base = re.findall(base_regex, split_fml[fml_ind - 1])[0][0]
