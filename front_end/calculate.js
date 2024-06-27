@@ -1,6 +1,8 @@
-// Script for interacting with back end
-
-var host = "http://localhost:5000";
+var CONFIG={"api_network": {"host": "localhost", "port": 30003}}
+console.log("API Host: " + CONFIG.api_network.host)
+console.log("API Port: " + CONFIG.api_network.port)
+var host = "http://" +  CONFIG.api_network.host + ":" + JSON.stringify(CONFIG.api_network.port);
+console.log(host)
 async function getSifrCalc(characterSet, radixPoint, negativeSign, formula) {
     console.log("Character Set: " + characterSet);
     console.log("Radix Point: " + radixPoint);

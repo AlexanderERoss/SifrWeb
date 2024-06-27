@@ -13,12 +13,11 @@ import logging
 from flask_cors import CORS, cross_origin
 
 # Local imports
-import back_end.parser as parser
+import parser
 
 logging.getLogger().setLevel(logging.WARNING)
 
-
-with open('./back_end/config.yml') as config_stream:
+with open('./config.yml') as config_stream:
     config = yaml.safe_load(config_stream)
 
 app = Flask(__name__)
