@@ -23,6 +23,7 @@ async function getSifrCalc(characterSet, radixPoint, negativeSign, formula) {
     return resultJSON;
 }
 
+// Takes the fields and calculates the formula using the back-end
 async function calculate() {
     var characterSet = await document.getElementById("character-set").value;
     var radixPoint = await document.getElementById("radix").value;
@@ -39,6 +40,6 @@ async function calculate() {
 
     }
     else if (responseCode == 422) {
-        document.getElementById("result").innerHTML = "ERROR: " + sifrResponse["Result"];
+        document.getElementById("result").innerHTML=  "ERROR: " + sifrResponse["Result"];
     }
 }

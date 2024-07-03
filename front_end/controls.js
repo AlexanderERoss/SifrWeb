@@ -9,9 +9,15 @@ document.getElementById("body")
         }
     });
 
-// Number system data
+// Function to populate controls (calls other functions)
+function populateControls() {
+    populateSystemSelector();
+    systemSelect();
+}
 
-let jsontext = {"Anglo Hindu-Arabic": {"Note": "",
+// Number system form data
+
+let jsonText = {"Anglo Hindu-Arabic": {"Note": "",
                                        "Radix Point": ".",
                                        "Negative Symbol": "-",
                                        "Character Set": "0123456789"},
@@ -27,7 +33,7 @@ let jsontext = {"Anglo Hindu-Arabic": {"Note": "",
                                 "Radix Point": ".",
                                 "Negative Symbol": "-",
                                 "Character Set": "0123456789ABCDEF"},
-                "Eastern Arabic - left to right": {"Note": "Left to right parsing; numerals are written the same as they traditionally write the lowest value digit first",
+                "Eastern Arabic - (left to right formula parsing)": {"Note": "Left to right parsing; numerals are written the same as they traditionally write the lowest value digit first",
                                                    "Radix Point": "٫",
                                                    "Negative Symbol": "-",
                                                    "Character Set": "٠١٢٣٤٥٦٧٨٩"},
@@ -44,3 +50,22 @@ let jsontext = {"Anglo Hindu-Arabic": {"Note": "",
                                            "Negative Symbol": "⠤",
                                            "Character Set": "⠚⠁⠃⠉⠙⠑⠋⠛⠓⠊"},
                }
+
+function populateSystemSelector() {
+    systemSelectElement = document.getElementById('systemSelect')
+    for (var field in jsonText) {
+        systemSelectElement.add(new Option(field));
+    }
+}
+
+function systemSelect() {
+    // Get value from dropdown
+    system = document.getElementById('systemSelect').value;
+    // Apply to fields
+    document.getElementById('character-set').value = jsonText[system]["Character Set"]; 
+    document.getElementById('radix').value = jsonText[system]["Radix Point"];
+    document.getElementById('negative-sign').value = jsonText[system]["Negative Symbol"];
+    if (jsonText[system]["Note"] !== "") {
+        document.getElementById('system-note').innerHTML = "Number system note: " + jsonText[system]["Note"];
+    }
+}

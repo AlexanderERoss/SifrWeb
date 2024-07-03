@@ -14,8 +14,23 @@ h3 {
 div.subtitle {
     font-style: italic;
     color: #DDDDDD;
-    font-size: 12;
+    font-size: 12pt;
     text-align: center;
+}
+
+div.note {
+    font-style: italic;
+    font-size: 10pt;
+    color: white;
+    text-align: left;
+}
+
+select {
+    padding: 4px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    background-color: rgb(30, 30, 40);
+    color: white;
 }
 
 p {

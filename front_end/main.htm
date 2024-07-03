@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <title> Sifr - Alexander Ross </title>
         <link rel="stylesheet" href="main.css">
         <script src="calculate.js" async></script>
         <script src="controls.js"  async></script>
     </head>
-    <body id="body">
+    <body id="body" onload="populateControls()">
         <div class="main-col">            
             <h1>Sifr Web</h1>
             <div class="subtitle">
@@ -26,8 +27,13 @@
                 operations including brackets. Note: Only integer
                 exponentiation has been implemented.
             </div>
+            <h3>Existing Number Systems (Customizable)</h3>
+            <select action="" id="systemSelect" onchange="systemSelect()">
+            </select>
+            <br>
+            <div class="note" id="system-note"></div>
             <h3>Character Set</h3>
-            <input id="character-set" style="width: 450px" type="text" value="0123456789">
+            <input id="character-set" style="width: 450px" type="text">
             
             <div class="table">
                 <div class="row" >
@@ -40,10 +46,10 @@
                 </div>
                 <div class="row">
                     <div class="halfcell">
-                        <input id="radix" type="text" value=".">
+                        <input id="radix" type="text">
                     </div>
                     <div class="halfcell">
-                        <input id="negative-sign" type="text" value="-">
+                        <input id="negative-sign" type="text">
                     </div>
                 </div>
             </div>
