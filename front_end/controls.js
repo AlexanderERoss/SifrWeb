@@ -12,6 +12,7 @@ document.getElementById("body")
 // Function to populate controls (calls other functions)
 function populateControls() {
     populateSystemSelector();
+    document.getElementById("systemSelect").value = "Anglo Hindu-Arabic";
     systemSelect();
 }
 
@@ -53,6 +54,7 @@ let jsonText = {"Anglo Hindu-Arabic": {"Note": "",
 
 function populateSystemSelector() {
     systemSelectElement = document.getElementById('systemSelect')
+        systemSelectElement.add(new Option("Custom"));
     for (var field in jsonText) {
         systemSelectElement.add(new Option(field));
     }
@@ -68,4 +70,8 @@ function systemSelect() {
     if (jsonText[system]["Note"] !== "") {
         document.getElementById('system-note').innerHTML = "Number system note: " + jsonText[system]["Note"];
     }
+}
+
+function selectCustom() {
+    document.getElementById("systemSelect").value = "Custom";
 }

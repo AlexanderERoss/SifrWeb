@@ -35,29 +35,24 @@ def do():
 def calculate_sifr():
     web_input = request.get_json()
     logging.warning(str(web_input))
-
-    class SetSifr(Sifr):
-        ssys = SifrSystem(digit_list=web_input['CharacterSet'],
-                          neg_sym=web_input['NegativeSign'],
-                          radix=web_input['RadixPoint']
-                          )
-
-        def __init__(self, sifr: str):
-            self.sifr = sifr
-            self.no_digits = len(sifr)
-            self.is_neg = sifr[0] == web_input["NegativeSign"]
     try:
+        class SetSifr(Sifr):
+            ssys = SifrSystem(digit_list=web_input['CharacterSet'],
+                              neg_sym=web_input['NegativeSign'],
+                              radix=web_input['RadixPoint']
+                              )
+
+            def __init__(self, sifr: str):
+                self.sifr = sifr
+                self.no_digits = len(sifr)
+                self.is_neg = sifr[0] == web_input["NegativeSign"]
+
         result = parser.calculate(web_input['Formula'], SetSifr)
         resp = Response("{\"Response\":200,\"Result\":\"" + result + "\"}")
         resp.headers["Content-Type"] = 'application/json'
     except Exception as e:
         print("ERROR: ", print(e))
-        try:
-            resp = Response("{\"Response\":422,\"Result\":\""
-                            + e.message + "\"}")
-        except Exception:
-            resp = Response("{\"Response\":422,\"Result\": \""
-                            + "Raw Error -- " + str(e) + "\"}")
+        resp = Response("{\"Response\":422,\"Result\":\"" + str(e) + "\"}")
         resp.headers["Content-Type"] = 'application/json'
     return resp
 
@@ -82,4 +77,4 @@ def calculate_sifr_test():
                         'Result': result})
     except Exception as e:
         return jsonify({'Response': 422,
-                        'Result': e.message})
+                        'Result': str(e)})

@@ -34,7 +34,7 @@
             <br>
             <div class="note" id="system-note"></div>
             <h3>Character Set</h3>
-            <input id="character-set" style="width: 450px" type="text">
+            <input id="character-set" style="width: 450px" type="text" onchange="selectCustom()">
             
             <div class="table">
                 <div class="row" >
@@ -47,10 +47,10 @@
                 </div>
                 <div class="row">
                     <div class="halfcell">
-                        <input id="radix" type="text">
+                        <input id="radix" type="text" onchange="selectCustom()">
                     </div>
                     <div class="halfcell">
-                        <input id="negative-sign" type="text">
+                        <input id="negative-sign" type="text" onchange="selectCustom()">
                     </div>
                 </div>
             </div>
