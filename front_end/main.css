@@ -36,7 +36,17 @@ select {
 p {
     color: white;
 }
-    
+
+p.error {
+    color: #EE9999;
+    font-style: bold;
+}
+
+p.scoped {
+    color: #EEBB44;
+    font-style: bold;
+}
+
 body {
     background-color: rgb(20,20,30);
 }
