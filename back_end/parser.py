@@ -53,12 +53,15 @@ def parenth_calc(formula_text, start_par_sym="(", end_par_sym=")",
                  mul_sym="*", add_sym="+", sub_sym="-"):
     logging.debug("parenth_calc started")
     parse_array = ['']
+    parenth_count = 0
     for c in formula_text:
         if c != start_par_sym and c != end_par_sym:
             parse_array[-1] += c
         elif c == start_par_sym:
             parse_array.append('')
+            parenth_count += 1
         elif c == end_par_sym:
+            parenth_count -= 1
             try:
                 parse_array[-2] += calculate(parse_array[-1],
                                              start_par_sym=start_par_sym,
@@ -76,6 +79,9 @@ def parenth_calc(formula_text, start_par_sym="(", end_par_sym=")",
         else:
             raise FormulaParsingError("FATAL CODE ERROR: Logic error with " +
                                       "parsing function")
+    if parenth_count > 0:
+        raise FormulaParsingError("Balanced Parentheses Error: "
+                                  + "Not enough closing brackets")
     logging.debug("parenth_calc ended-returned: " + parse_array[0])
     return parse_array[0]
 
@@ -210,13 +216,25 @@ def calculate(formula_text, digit_type=float, start_par_sym="(",
                     logging.debug("  base_regex: " + base_regex)
                     base = re.findall(base_regex, split_fml[fml_ind - 1])[0][0]
                     logging.debug("  Exp in prior: " + str(base))
-                    input1 = base
+                    try:
+                        input1 = base
+                    except Exception:
+                        raise FormulaParsingError("Need a number both sides of"
+                                                  + " the operation")
                 else:
-                    input1 = re.findall(num_pattern + '$',
-                                        split_fml[fml_ind - 1])[0][0]
+                    try:
+                        input1 = re.findall(num_pattern + '$',
+                                            split_fml[fml_ind - 1])[0][0]
+                    except Exception:
+                        raise FormulaParsingError("Need a number both sides of"
+                                                  + " the operation")
                 logging.debug("    input1: " + str(input1))
-                input2 = re.findall('^' + num_pattern,
-                                    split_fml[fml_ind])[0][0]
+                try:
+                    input2 = re.findall('^' + num_pattern,
+                                        split_fml[fml_ind])[0][0]
+                except Exception:
+                    raise FormulaParsingError("Need a number both sides of"
+                                              + " the operation")
                 logging.debug("    input2: " + str(input2))
 
                 if sym == pow_sym:
