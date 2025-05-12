@@ -54,7 +54,7 @@ let jsonText = {"Anglo Hindu-Arabic": {"Note": "",
 
 function populateSystemSelector() {
     systemSelectElement = document.getElementById('systemSelect')
-        systemSelectElement.add(new Option("Custom"));
+    systemSelectElement.add(new Option("Custom"));
     for (var field in jsonText) {
         systemSelectElement.add(new Option(field));
     }
@@ -70,8 +70,12 @@ function systemSelect() {
     if (jsonText[system]["Note"] !== "") {
         document.getElementById('system-note').innerHTML = "Number system note: " + jsonText[system]["Note"];
     }
+    else {
+        document.getElementById('system-note').innerHTML = ""
+    }
 }
 
 function selectCustom() {
     document.getElementById("systemSelect").value = "Custom";
+    document.getElementById('system-note').innerHTML = "";
 }
